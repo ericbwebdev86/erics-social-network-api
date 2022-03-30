@@ -75,8 +75,8 @@ const thoughtController = {
         })
         .catch(err => res.json(err));
     },
-    //add a reaction
-    addReaction ({ params, body }, res) {
+    //create a reaction
+    createReaction ({ params, body }, res) {
         Thought.findOneAndUpdate(
             { _id: params.thoughtId },
             { $push: { reaction: body} },
