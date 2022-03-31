@@ -37,10 +37,11 @@ const UserSchema = new Schema(
   }
 );
 
-
-const User = model('Pizza', UserSchema);
 UserSchema.virtual('friendCount').get(function() {
   return this.friends.length;
 });
+
+const User = model('User', UserSchema);
+
 
 module.exports = User;
