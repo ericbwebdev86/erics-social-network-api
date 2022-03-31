@@ -12,7 +12,6 @@ const UserSchema = new Schema(
       type: String,
       unique: true,
       required: true,
-      trim: true,
       match: [/.+\@.+\..+/, 'Please enter an email address.']
     },
     thoughts: [
@@ -40,6 +39,7 @@ const UserSchema = new Schema(
 UserSchema.virtual('friendCount').get(function() {
   return this.friends.length;
 });
+
 
 const User = model('User', UserSchema);
 

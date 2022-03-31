@@ -4,12 +4,11 @@ const thoughtController = {
     // get all thoughts
     getAllThoughts(req, res) {
       Thought.find({})
-        .populate({
-          path: 'user',
-          select: '-__v'
-        })
+        // .populate({
+        //   path: 'user',
+        //   select: '-__v'
+        // })
         .select('-__v')
-        .sort({ _id: -1 })
         .then(dbThoughtData => res.json(dbThoughtData))
         .catch(err => {
           console.log(err);
@@ -20,10 +19,6 @@ const thoughtController = {
     // get one thought via id
     getThoughtById({ params }, res) {
       Thought.findOne({ _id: params.id })
-        .populate({
-          path: 'user',
-          select: '-__v'
-        })
         .select('-__v')
         .then(dbThoughtData => res.json(dbThoughtData))
         .catch(err => {
@@ -33,12 +28,12 @@ const thoughtController = {
     },
   
     // create a thought
-    createThought({ params, body }, res) {
+    createThought({ body }, res) {
       Thought.create(body)
-        .then(({ _id }) => {
+        .then((dbThoughtData) => {
             return User.findOneAndUpdate(
-                { username: body.username},
-                { $push: { thought: _id } },
+                { _id: body.userId },
+                { $push: { thought: dbThoughtData._id } },
                 { new: true }
                 );
         }).then(dbUserData => {
@@ -53,7 +48,10 @@ const thoughtController = {
   
     // update a thought via id
     updateThought({ params, body }, res) {
-      Thought.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
+      Thought.findOneAndUpdate(
+        { _id: params.id },
+        body,
+        { new: true })
         .then(dbThoughtData => {
           if (!dbThoughtData) {
             res.status(404).json({ message: 'No thought matches that id!' });

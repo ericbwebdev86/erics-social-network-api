@@ -12,7 +12,8 @@ const {
 // /api/thoughts GET 
 router
   .route('/')
-  .get(getAllThoughts);
+  .get(getAllThoughts)
+  .post(createThought);
 
 // /api/thoughts/:id GET PUT and DELETE
 router
@@ -22,9 +23,9 @@ router
   .delete(deleteThought);
 
 // /api/thoughts/:userId POST
-router
-.route('/:userId')
-.post(createThought);
+// router
+// .route('/:userId');
+
 
 // /api/thoughts/:thoughtId/reactions POST
 router
